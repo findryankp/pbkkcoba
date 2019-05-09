@@ -1,0 +1,133 @@
+{% extends "layouts/layout.njk" %}
+{% set page_title = "Dashboard" %}
+
+{% block main %}
+<section class="hero-banner magic-ball">
+	<div class="container">
+		<div class="row align-items-center text-center text-md-left">
+			<div class="col-lg-12 col-xl-12" style="text-align: center; color: black; font-weight: bold; font-size: 20px " >
+				FORM ABSENSI KELAS 
+			</div>
+			<div class="col-lg-12 col-xl-12" style="text-align: center; color: 	#0000CD; font-weight: bold; " >
+				{{nama}}<br>{{username}}
+			</div>
+			<div class="col-lg-10 col-xl-10 align-self-center mb-8 mb-lg-0">
+			</div>
+			<br>
+			<br>
+			<div class="col-lg-12 col-xl-12 align-self-center mb-2 mb-lg-0">
+				<table class="table" name="table">
+					<thead>
+						<tr>
+							<th scope="col">No</th>
+							<th scope="col">Kelas</th>
+							<th scope="col">Hari</th>
+							<th scope="col">Waktu Awal</th>
+							<th scope="col">Waktu Akhir</th>
+							<th scope="col">Ruangan</th>
+							<th scope="col">Option</th>
+						</tr>
+					</thead>
+
+					<tbody>
+						{% for matkul in results %}
+						<tr>
+							<!-- <th scope="row">1</th> -->
+							<td class="counterCell"> </td>
+							<td>{{matkul.nama}}</td>
+							<td>{{matkul.hari}}</td>
+							<td>{{matkul.waktu_awal}}</td>
+							<td>{{matkul.waktu_akhir}}</td>
+							<td>{{matkul.ruang}}</td>
+							<td>
+								<button class="btn btn-info" data-toggle="modal" data-target="#myModalAdd">Absen</button>
+								<button class="btn btn-danger" data-toggle="modal" data-target="#myModalSakit">Sakit</button>
+							</tr>
+							{% endfor %}
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</section>
+	<form action="/absensi" method="post">
+		<div class="modal fade" id="myModalAdd" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel">Absensi Online</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+					 <strong>Anda akan melakukan absensi apakah anda benar bahwa ini anda yang sesungguhnya?</strong>
+						<div class="form-group">
+							<input type="text" name="id_user" class="form-control" value="{{id}}">
+						</div>
+
+						<div class="form-group">
+							<input type="text" name="id_matkul" class="form-control" value="{{id_matkul}}" >
+						</div>
+
+						<div class="form-group">
+							<input type="text" name="status" class="form-control" value="2" >
+						</div>
+					</div>
+					<div class="modal-footer">
+						<input type="hidden" name="id" class="id_matkul">
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+						<button type="submit" class="btn btn-primary">Absen</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</form>
+	<form action="/sakit" method="post">
+		<div class="modal fade" id="myModalSakit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel">Absensi Online</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+					 <strong>Anda apakah sakit dan anda benar bahwa ini anda yang sesungguhnya?</strong>
+						<div class="form-group">
+							<input type="text" name="id_user" class="form-control" value="{{id}}">
+						</div>
+
+						<div class="form-group">
+							<input type="text" name="id_matkul" class="form-control" value="{{id_matkul}}" >
+						</div>
+
+						<div class="form-group">
+							<input type="text" name="status" class="form-control" value="2" >
+						</div>
+					</div>
+					<div class="modal-footer">
+						<input type="hidden" name="id" class="id_matkul">
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+						<button type="submit" class="btn btn-primary">Sakit</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</form>
+	<br>
+
+	<script>
+		$(document).ready(function(){
+            //tampilkan data ke modal untuk edit
+            $('#mytable').on('click','.absensi',function(){
+            	var id_matkul = $(this).data('id_matkul');
+            	$('#myModalAdd').modal('show');
+            	$('.id_matkul').val(id_matkul);
+            
+            });
+
+        });
+    </script>
+    {% endblock %}
